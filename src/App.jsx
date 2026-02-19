@@ -5,15 +5,28 @@ import GameScreen from "./assets/components/GameScreen.jsx";
 import EndScreen from "./assets/components/EndScreen.jsx";
 
 function App() {
-  const [gameState, setGameState] = useState("start") 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
-  const [earned, setEarned] = useState(0)
+  const [gameState, setGameState] = useState("start");
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [earned, setEarned] = useState(0);
+  const [gameQuestions, setGameQuestions] = useState([]);
+
+  const shuffleArray = (array) => {
+    return [...array].sort(() => Math.random() - 0.5);
+  };
 
   const startGame = () => {
-    setGameState("game");
+    const shuffled = shuffleArray(questions);
+    const selected = shuffled.slice(0, 10).map(q => ({
+      ...q,
+      options: shuffleArray(q.options)
+    }));
+
+    setGameQuestions(selected);
     setCurrentQuestionIndex(0);
     setEarned(0);
+    setGameState("game");
   };
+
   const endGame = (amount) => {
     setEarned(amount);
     setGameState("end");
@@ -22,17 +35,21 @@ function App() {
   return (
     <>
       {gameState === "start" && <StartScreen startGame={startGame} />}
+
       {gameState === "game" && (
         <GameScreen
-          question={questions[currentQuestionIndex]}
+          questions={gameQuestions}
           currentQuestionIndex={currentQuestionIndex}
           setCurrentQuestionIndex={setCurrentQuestionIndex}
           endGame={endGame}
         />
       )}
-      {gameState === "end" && <EndScreen earned={earned} startGame={startGame} />}  
+
+      {gameState === "end" && (
+        <EndScreen earned={earned} startGame={startGame} />
+      )}
     </>
   );
 }
 
-export default App
+export default App;

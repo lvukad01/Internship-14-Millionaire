@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Levels from "./Levels.jsx";
+
 
 export default function GameScreen({
   questions,
@@ -11,6 +12,15 @@ export default function GameScreen({
   const question = questions[currentQuestionIndex];
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [skipUsed, setSkipUsed] = useState(false);
+  const [fiftyUsed, setFiftyUsed] = useState(false);
+  const [visibleOptions, setVisibleOptions] = useState(question.options);
+
+  useEffect(() => {
+    if (question) {
+      setVisibleOptions(question.options);
+      setSelectedAnswer(null);
+    }
+  }, [question]);
 
   if (!question) return null;
   const handleAnswer = (answer) => {
@@ -40,24 +50,45 @@ export default function GameScreen({
         setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
     };
+    const handleFifty = () => {
+        if (fiftyUsed) return;
+
+        const correct = question.correct;
+        const wrongOptions = question.options.filter(o => o !== correct);
+        const randomWrong =
+            wrongOptions[Math.floor(Math.random() * wrongOptions.length)];
+
+        setVisibleOptions([correct, randomWrong].sort(() => Math.random() - 0.5));
+        setFiftyUsed(true);
+    };
+
   return (
     <div className="game-layout">
       <div className="game">
         <h3>Razina {currentQuestionIndex + 1}</h3>
         <h2>{question.question}</h2>
         <div className="jokers">
-            <button
-                onClick={handleSkip}
-                disabled={skipUsed}
-                className={skipUsed ? "joker used" : "joker"}
-            >
-                Preskoči pitanje
-            </button>
+        <button
+            onClick={handleFifty}
+            disabled={fiftyUsed}
+            className={fiftyUsed ? "joker used" : "joker"}
+        >
+            50:50
+        </button>
+
+        <button
+            onClick={handleSkip}
+            disabled={skipUsed}
+            className={skipUsed ? "joker used" : "joker"}
+        >
+            Preskoči pitanje
+        </button>
         </div>
 
 
+
         <div className="options">
-          {question.options.map((option, index) => (
+          {visibleOptions.map((option, index) => (
             <button
               key={index}
               onClick={() => handleAnswer(option)}

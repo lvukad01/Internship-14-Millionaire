@@ -7,7 +7,7 @@ export default function Levels({ levels, currentQuestionIndex }) {
           className={`level ${
             index === currentQuestionIndex
               ? "active"
-              : index === 4
+              : index === 4||index === 9
               ? "safe"
               : ""
           }`}

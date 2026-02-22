@@ -1,0 +1,52 @@
+.body{
+    margin-left: 100px;
+}
+.levels {
+  width: 200px;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.level {
+  padding: 10px;
+  margin: 4px 0;
+  background: #222;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 6px;
+  opacity: 0.6;
+}
+
+.level.active {
+  background: orange;
+  color: black;
+  opacity: 1;
+  font-weight: bold;
+}
+
+.level.safe {
+  border: 2px solid gold;
+}
+
+.game-layout{
+    display:flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+
+}
+.game {
+  flex: 1;
+  max-width: 70%;
+}
+.levels {
+  width: 220px;
+  margin-left: 20px;
+}
+.levels {
+  position: fixed;
+  right: 20px;
+  top: 80px;
+  width: 220px;
+}

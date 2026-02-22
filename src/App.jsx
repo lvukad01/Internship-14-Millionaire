@@ -61,7 +61,7 @@ const endGame = (won) => {
       )}
 
       {gameState === "end" && (
-        <EndScreen earned={earned} startGame={startGame} />
+        <EndScreen earned={earned} onRestart={startGame} />
       )}
     </>
   );

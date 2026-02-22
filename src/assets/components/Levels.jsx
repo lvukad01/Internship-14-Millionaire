@@ -4,13 +4,13 @@ export default function Levels({ levels, currentQuestionIndex }) {
       {levels.map((amount, index) => (
         <li
           key={index}
-          className={
+          className={`level ${
             index === currentQuestionIndex
               ? "active"
               : index === 4
               ? "safe"
               : ""
-          }
+          }`}
         >
           {index + 1}. {amount} €
         </li>

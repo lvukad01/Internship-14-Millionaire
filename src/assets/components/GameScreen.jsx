@@ -1,5 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Levels from "./Levels.jsx";
+import question1 from "../sounds/Question_1-4.mp4";
+import question2 from "../sounds/Question_5-9.mp4";
+import question3 from "../sounds/Question_10.mp4";
+
+
 
 
 export default function GameScreen({
@@ -14,19 +19,31 @@ export default function GameScreen({
   const [skipUsed, setSkipUsed] = useState(false);
   const [fiftyUsed, setFiftyUsed] = useState(false);
   const [visibleOptions, setVisibleOptions] = useState(question.options);
+  const [timer, setTimer] = useState(60);
+  const sound=useRef(null);
 
   useEffect(() => {
     if (question) {
       setVisibleOptions(question.options);
       setSelectedAnswer(null);
+      setTimer(60);
     }
+    if(sound.current){
+        sound.current.pause();
+    }
+
+    const audioFile = getAudioForRound(currentQuestionIndex);
+    sound.current = new Audio(audioFile);
+    sound.current.play().catch(e => console.log("Audio error:", e));
   }, [question]);
 
   if (!question) return null;
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer);
     const correct = answer === question.correct;
-
+    if(sound.current){
+        sound.current.pause();
+    }
     setTimeout(() => {
       if (correct) {
         if (currentQuestionIndex === questions.length - 1) {
@@ -61,7 +78,15 @@ export default function GameScreen({
         setVisibleOptions([correct, randomWrong].sort(() => Math.random() - 0.5));
         setFiftyUsed(true);
     };
-
+    const getAudioForRound=(currentQuestionIndex)=>{
+        if(currentQuestionIndex<4){
+            return question1;
+        }else if(currentQuestionIndex<9){
+            return question2;
+        }else{
+            return question3;
+        }
+    };
   return (
     <div className="game-layout">
       <div className="game">

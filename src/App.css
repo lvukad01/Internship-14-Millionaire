@@ -1,17 +1,39 @@
 .body{
-    margin-left: 100px;
+    background-color: rgb(137, 30, 195);
+}
+.start, .end{
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.start button{
+ font-size: 50px;
+ border-radius: 15px;
+}
+.end p{
+    font-size: 40px;
+    margin: 20px 0;
+}
+.end button{
+    font-size: 30px;
+    padding: 10px 20px;
 }
 .levels {
   width: 200px;
   display: flex;
   flex-direction: column-reverse;
+  margin-left: 20px;
+  position: fixed;
+  right: 20px;
+  top: 80px;
 }
+
 
 .level {
   padding: 10px;
   margin: 4px 0;
   background: #222;
-  color: white;
+  color: rgb(253, 11, 11);
   display: flex;
   justify-content: space-between;
   border-radius: 6px;
@@ -26,7 +48,12 @@
 }
 
 .level.safe {
-  border: 2px solid gold;
+  color:white;
+}
+.joker.used{
+    background-color: #555;
+    color: #999;
+    cursor: not-allowed;
 }
 
 .game-layout{
@@ -40,13 +67,27 @@
   flex: 1;
   max-width: 70%;
 }
-.levels {
-  width: 220px;
-  margin-left: 20px;
+.game button{
+    margin: 10px 10px;
+    border-radius: 15px;
 }
-.levels {
-  position: fixed;
-  right: 20px;
-  top: 80px;
-  width: 220px;
+.options{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 10px;
+}
+
+
+@media (min-width: 768px) {
+ .game h3{
+        font-size: 30px;
+    }
+ .game h2{
+        font-size: 45px;
+    }
+ .game .options button{
+        font-size: 40px;
+    }
+
+ 
 }

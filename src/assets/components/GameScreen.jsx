@@ -3,7 +3,8 @@ import Levels from "./Levels.jsx";
 import question1 from "../sounds/Question_1-4.mp4";
 import question2 from "../sounds/Question_5-9.mp4";
 import question3 from "../sounds/Question_10.mp4";
-
+import correctSound from "../sounds/Correct.mp3";
+import wrongSound from "../sounds/Wrong.mp3";
 
 
 
@@ -32,18 +33,26 @@ export default function GameScreen({
         sound.current.pause();
     }
 
-    const audioFile = getAudioForRound(currentQuestionIndex);
+  const audioFile = getAudioForRound(currentQuestionIndex);
     sound.current = new Audio(audioFile);
     sound.current.play().catch(e => console.log("Audio error:", e));
   }, [question]);
 
   if (!question) return null;
+
   const handleAnswer = (answer) => {
     setSelectedAnswer(answer);
     const correct = answer === question.correct;
     if(sound.current){
         sound.current.pause();
     }
+      if (answer === question.correct) {
+        sound.current = new Audio(correctSound);
+    } else {
+        sound.current = new Audio(wrongSound);
+    }
+    sound.current.play().catch(e => console.log("Audio error:", e));
+
     setTimeout(() => {
       if (correct) {
         if (currentQuestionIndex === questions.length - 1) {
@@ -55,8 +64,9 @@ export default function GameScreen({
       } else {
         endGame(false); 
       }
-    }, 800);
+    }, 2000);
   };
+
     const handleSkip = () => {
     if (skipUsed) return;
 
@@ -119,12 +129,14 @@ export default function GameScreen({
               onClick={() => handleAnswer(option)}
               disabled={selectedAnswer !== null}
               className={
-                selectedAnswer === option
-                  ? option === question.correct
+                selectedAnswer
+                ? option === question.correct
                     ? "correct"
-                    : "wrong"
-                  : ""
-              }
+                    : option === selectedAnswer
+                    ? "wrong"     
+                    : ""
+                : ""
+            }
             >
               {option}
             </button>

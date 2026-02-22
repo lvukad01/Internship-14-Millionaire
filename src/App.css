@@ -76,6 +76,16 @@
     grid-template-columns: repeat(2, 1fr); 
     gap: 10px;
 }
+.correct {
+  background-color: green;
+  color: white;
+}
+
+.wrong {
+  background-color: red;
+  color: white;
+}
+
 
 
 @media (min-width: 768px) {
